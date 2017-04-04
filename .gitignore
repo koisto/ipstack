@@ -1,5 +1,5 @@
 *.o
 *.out
-*.ipstack
+ipstack
 *.txt
 Unity/*
