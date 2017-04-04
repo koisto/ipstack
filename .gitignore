@@ -1,2 +1,5 @@
 *.o
-testslip
+*.out
+*.ipstack
+*.txt
+Unity/*

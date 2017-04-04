@@ -13,6 +13,9 @@ char recv_char(void)
 
 int main (void)
 {
+	char buffer[12];
 
+
+	slip_send_packet(buffer, 12);
 	return 0;
 }
