@@ -4,8 +4,8 @@
 #include "slip.h"
 
 // externally defined function to send and receive chars
-extern void send_char(char c);
-extern char recv_char(void);
+extern void send_char(uint8_t c);
+extern uint8_t recv_char(void);
 
 // SLIP special character codes 
 #define END             0300    /* indicates end of packet */
@@ -13,7 +13,7 @@ extern char recv_char(void);
 #define ESC_END         0334    /* ESC ESC_END means END data byte */
 #define ESC_ESC         0335    /* ESC ESC_ESC means ESC data byte */
 
-void slip_send_packet(char * p, int len) 
+void slip_send_packet(uint8_t * p, uint16_t len) 
 {
 	// send an initial END character to flush out any data that may
 	// have accumulated in the receiver due to line noise
@@ -21,7 +21,7 @@ void slip_send_packet(char * p, int len)
 
 	// for each byte in the packet, send the appropriate character sequence
 	while(len--) {
-		switch((unsigned char)*p) {
+		switch(*p) {
 			
 			// if it's the same code as an END character, we send a
 			// special two character code so as not to make the
@@ -51,10 +51,10 @@ void slip_send_packet(char * p, int len)
 	send_char(END);
 }
 
-int slip_recv_packet(char * p, int len)
+uint16_t slip_recv_packet(uint8_t * p, uint16_t len)
 {
-	char c;
-	int received = 0;
+	uint8_t c;
+	uint16_t received = 0;
 
 	// sit in a loop reading bytes until we put together a whole packet.
 	// Make sure not to copy them into the packet if we run out of room.
@@ -63,7 +63,7 @@ int slip_recv_packet(char * p, int len)
 	   c = recv_char();
 
 	   // handle byte stuffing if necessary
-	   switch((unsigned char)c) {
+	   switch(c) {
 			// if it's an END character then we're done with the packet
 			case END:
 			// a minor optimization: if there is no
@@ -88,7 +88,7 @@ int slip_recv_packet(char * p, int len)
 				// seems to be to leave the byte alone and
 				// just stuff it into the packet
 				
-				switch((unsigned char)c) {
+				switch(c) {
 					case ESC_END:
 						c = END;
 						break;

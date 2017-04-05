@@ -10,14 +10,14 @@
 #define ESC_END         0334    /* ESC ESC_END means END data byte */
 #define ESC_ESC         0335    /* ESC ESC_ESC means ESC data byte */
 
-char sent_buffer [BUFFER_SIZE];
+uint8_t sent_buffer [BUFFER_SIZE];
 int send_idx = 0;
 
-char rcvd_buffer [BUFFER_SIZE];
+uint8_t rcvd_buffer [BUFFER_SIZE];
 int rcvd_idx = 0;
 
 //
-void send_char(char c)
+void send_char(uint8_t c)
 {
 	sent_buffer[send_idx] = c;
 	TEST_ASSERT_MESSAGE(send_idx < BUFFER_SIZE, "Sent buffer overflow");
@@ -25,9 +25,9 @@ void send_char(char c)
 		send_idx++;
 }
 
-char recv_char(void)
+uint8_t recv_char(void)
 {
-	char c = 0;
+	uint8_t c = 0;
 
 	TEST_ASSERT_MESSAGE(rcvd_idx < BUFFER_SIZE, "Receive buffer overflow");
 	if (rcvd_idx < BUFFER_SIZE)
@@ -39,44 +39,44 @@ char recv_char(void)
 
 void test_send_packet_hello(void)
 {
-	char to_send[5] = {'h','e','l','l','o'};
-	char expected[7] = {END,'h','e','l','l','o',END};
+	uint8_t to_send[5] = {'h','e','l','l','o'};
+	uint8_t expected[7] = {END,'h','e','l','l','o',END};
 
 
 	RESET_IDX(send_idx);
 	slip_send_packet(to_send,5);
 
-	TEST_ASSERT_EQUAL_HEX8_ARRAY_MESSAGE(expected, sent_buffer, 7, "Sent buffer contents incorrect");
+	TEST_ASSERT_EQUAL_UINT8_ARRAY_MESSAGE(expected, sent_buffer, 7, "Sent buffer contents incorrect");
 }
 
 void test_send_packet_hello_with_end(void)
 {
-	char to_send[6] = {'h','e',END,'l','l','o'};
-	char expected[9] = {END,'h','e',ESC,ESC_END,'l','l','o',END};
+	uint8_t to_send[6] = {'h','e',END,'l','l','o'};
+	uint8_t expected[9] = {END,'h','e',ESC,ESC_END,'l','l','o',END};
 
 	RESET_IDX(send_idx);
 	slip_send_packet(to_send,6);
 
-	TEST_ASSERT_EQUAL_HEX8_ARRAY_MESSAGE(expected, sent_buffer, 9, "Sent buffer contents incorrect");
+	TEST_ASSERT_EQUAL_UINT8_ARRAY_MESSAGE(expected, sent_buffer, 9, "Sent buffer contents incorrect");
 }
 
 void test_send_packet_hello_with_esc(void)
 {
-	char to_send[6] = {'h','e',ESC,'l','l','o'};
-	char expected[9] = {END,'h','e',ESC,ESC_ESC,'l','l','o',END};
+	uint8_t to_send[6] = {'h','e',ESC,'l','l','o'};
+	uint8_t expected[9] = {END,'h','e',ESC,ESC_ESC,'l','l','o',END};
 
 	RESET_IDX(send_idx);
 	slip_send_packet(to_send,6);
 
-	TEST_ASSERT_EQUAL_HEX8_ARRAY_MESSAGE(expected, sent_buffer, 9, "Sent buffer contents incorrect");
+	TEST_ASSERT_EQUAL_UINT8_ARRAY_MESSAGE(expected, sent_buffer, 9, "Sent buffer contents incorrect");
 }
 
 
 void test_recv_packet_hello(void)
 {
-	char expected[5] = {'h','e','l','l','o'};
-	char packet[10];
-	int bc;
+	uint8_t expected[5] = {'h','e','l','l','o'};
+	uint8_t packet[10];
+	uint16_t bc;
 
 	// set up the receive buffer by hand
 	rcvd_buffer[0] = END;
@@ -90,15 +90,15 @@ void test_recv_packet_hello(void)
 	RESET_IDX(rcvd_idx);
 	bc = slip_recv_packet(packet,10);
 
-	TEST_ASSERT_EQUAL_INT_MESSAGE(5, bc, "Received byte count incorrect");
-	TEST_ASSERT_EQUAL_HEX8_ARRAY_MESSAGE(expected, packet, 5, "Receive buffer contents incorrect");
+	TEST_ASSERT_EQUAL_UINT16_MESSAGE(5, bc, "Received byte count incorrect");
+	TEST_ASSERT_EQUAL_UINT8_ARRAY_MESSAGE(expected, packet, 5, "Receive buffer contents incorrect");
 }
 
 void test_recv_packet_hello_with_end(void)
 {
-	char expected[6] = {'h','e',END,'l','l','o'};
-	char packet[10];
-	int bc;
+	uint8_t expected[6] = {'h','e',END,'l','l','o'};
+	uint8_t packet[10];
+	uint16_t bc;
 
 	// set up the receive buffer by hand
 	rcvd_buffer[0] = END;
@@ -114,16 +114,16 @@ void test_recv_packet_hello_with_end(void)
 	RESET_IDX(rcvd_idx);
 	bc = slip_recv_packet(packet,10);
 
-	TEST_ASSERT_EQUAL_INT_MESSAGE(6, bc, "Received byte count incorrect");
-	TEST_ASSERT_EQUAL_HEX8_ARRAY_MESSAGE(expected, packet, 6, "Receive buffer contents incorrect");
+	TEST_ASSERT_EQUAL_UINT16_MESSAGE(6, bc, "Received byte count incorrect");
+	TEST_ASSERT_EQUAL_UINT8_ARRAY_MESSAGE(expected, packet, 6, "Receive buffer contents incorrect");
 }
 
 
 void test_recv_packet_hello_with_esc(void)
 {
-	char expected[6] = {'h','e',ESC,'l','l','o'};
-	char packet[10];
-	int bc;
+	uint8_t expected[6] = {'h','e',ESC,'l','l','o'};
+	uint8_t packet[10];
+	uint16_t bc;
 
 	// set up the receive buffer by hand
 	rcvd_buffer[0] = END;
@@ -139,8 +139,8 @@ void test_recv_packet_hello_with_esc(void)
 	RESET_IDX(rcvd_idx);
 	bc = slip_recv_packet(packet,10);
 
-	TEST_ASSERT_EQUAL_INT_MESSAGE(6, bc, "Received byte count incorrect");
-	TEST_ASSERT_EQUAL_HEX8_ARRAY_MESSAGE(expected, packet, 6, "Receive buffer contents incorrect");
+	TEST_ASSERT_EQUAL_UINT16_MESSAGE(6, bc, "Received byte count incorrect");
+	TEST_ASSERT_EQUAL_UINT8_ARRAY_MESSAGE(expected, packet, 6, "Receive buffer contents incorrect");
 }
 
 int main (void)
