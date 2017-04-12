@@ -3,7 +3,7 @@ TARGET   = ipstack
 
 CC       = gcc
 # compiling flags here
-CFLAGS   = -std=c99 -Wall -I.
+CFLAGS   = -std=c99 -Wall -I. -DDEBUG
 
 LINKER   = gcc
 # linking flags here
@@ -33,7 +33,7 @@ test%.txt : test%.out
 	@-./$< > $@ 2>&1
 
 test%.out : test%.o %.o unity.o
-	@$(LINKER) $(DEPFLAGS) -o $@ $^
+	@$(LINKER) -o $@ $^
 
 %.o : $(UNITYDIR)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@ -I$(UNITYDIR)	
@@ -49,5 +49,5 @@ test%.out : test%.o %.o unity.o
 
 .PHONY: clean
 clean:
-	@rm -f *.o *.out *.txt $(TARGET) $(DEPDIR)/*.d
+	@rm -f *.o *.out *.txt $(TARGET)
 

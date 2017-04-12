@@ -2,4 +2,6 @@
 *.out
 ipstack
 *.txt
+src/debug.h
 Unity/*
+scratch/*
