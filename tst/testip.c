@@ -202,6 +202,7 @@ void test_parse_return_sourceip(void)
 
 	ip_parse_header(ip_header, 20, NULL, NULL, NULL, &source);
 	//TEST_ASSERT_EQUAL_MESSAGE(1, proto, "Parsing did not return protocol value");
+	TEST_FAIL();
 }
 
 int main (void)
