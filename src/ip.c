@@ -1,5 +1,6 @@
 //
 #include "ip.h"
+#include "ipstack_conf.h"
 #include "debug.h"
 
 #include <stddef.h>
@@ -44,6 +45,13 @@ uint16_t ip_parse_header(uint8_t * packet, uint16_t len, uint8_t * payload, uint
 	if (ip_checksum(packet,hdr_len))
 		return IP_HEADER_ERROR;
 	
+	// check that destination matches our host address
+	if ((g_host_addr.bytes[0] != packet[16]) ||
+		(g_host_addr.bytes[1] != packet[17]) ||
+		(g_host_addr.bytes[2] != packet[18]) ||
+		(g_host_addr.bytes[3] != packet[19]))
+		return IP_HEADER_ERROR;		
+
 	// store the protocol value from the header
 	if (proto != NULL)
 		*proto = packet[9];

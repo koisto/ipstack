@@ -51,7 +51,8 @@ void test_parse_invalid_version(void)
 	};
 
 
-	TEST_ASSERT_NOT_EQUAL_MESSAGE(0, ip_parse_header(ip_header, 20, NULL, NULL, NULL, NULL), "Parsing did not detect error in header version");
+	TEST_ASSERT_EQUAL_UINT16_MESSAGE(IP_HEADER_ERROR, ip_parse_header(ip_header, 20, NULL, NULL, NULL, NULL), \
+														"Parsing did not detect error in header version");
 }
 
 void test_parse_invalid_header_length(void)
@@ -79,7 +80,7 @@ void test_parse_invalid_header_length(void)
 		0xc7
 	};
 
-	TEST_ASSERT_NOT_EQUAL_MESSAGE(0, ip_parse_header(ip_header, 20, NULL, NULL, NULL, NULL), \
+	TEST_ASSERT_EQUAL_UINT16_MESSAGE(IP_HEADER_ERROR, ip_parse_header(ip_header, 20, NULL, NULL, NULL, NULL), \
 														"Parsing did not detect error in header length field");
 
 }
@@ -109,7 +110,7 @@ void test_parse_invalid_packet_length(void)
 		0xc7
 	};
 
-	TEST_ASSERT_NOT_EQUAL_MESSAGE(0, ip_parse_header(ip_header, 10, NULL, NULL, NULL, NULL), \
+	TEST_ASSERT_EQUAL_UINT16_MESSAGE(IP_HEADER_ERROR, ip_parse_header(ip_header, 10, NULL, NULL, NULL, NULL), \
 														"Parsing did not detect error in packet length - too short");
 }
 
@@ -138,7 +139,7 @@ void test_parse_invalid_checksum(void)
 		0xc7
 	};
 
-	TEST_ASSERT_NOT_EQUAL_MESSAGE(0, ip_parse_header(ip_header, 20, NULL, NULL, NULL, NULL), \
+	TEST_ASSERT_EQUAL_UINT16_MESSAGE(IP_HEADER_ERROR, ip_parse_header(ip_header, 20, NULL, NULL, NULL, NULL), \
 														"Parsing did not detect checksum error");
 }
 
@@ -164,10 +165,10 @@ void test_parse_wrong_destination(void)
 		0xc0,	// destination IP
 		0xa8,
 		0x00,
-		0xc7
+		0xc8
 	};
 
-	TEST_ASSERT_NOT_EQUAL_MESSAGE(0, ip_parse_header(ip_header, 20, NULL, NULL, NULL, NULL) , \
+	TEST_ASSERT_EQUAL_UINT16_MESSAGE(IP_HEADER_ERROR, ip_parse_header(ip_header, 20, NULL, NULL, NULL, NULL) , \
 														"Parsing did not detect incorrect destination");	
 }
 

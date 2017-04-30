@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #define IP_HEADER_ERROR		99
+#define IP_WRONG_DEST		100
 
 
 typedef struct ip_addr_s {
