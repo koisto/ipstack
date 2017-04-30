@@ -23,7 +23,7 @@ uint16_t ip_checksum (uint8_t * header, uint16_t len)
 	return ~sum;
 }
 
-uint16_t ip_parse_header(uint8_t * packet, uint16_t len, uint8_t * payload, uint16_t * payload_len, uint8_t * proto, ip_addr_t * src)
+uint16_t ip_parse_header(uint8_t * packet, uint16_t len, uint16_t * payload_idx, uint8_t * proto, ip_addr_t * src)
 {
 	uint16_t hdr_len;
 
@@ -63,6 +63,15 @@ uint16_t ip_parse_header(uint8_t * packet, uint16_t len, uint8_t * payload, uint
 		src->bytes[2] = packet[14];
 		src->bytes[3] = packet[15];
 	}	
+
+	// set pointer to payload data
+	if (payload_idx != NULL)
+	{
+		if (len - hdr_len)
+			*payload_idx = hdr_len;
+		else
+			*payload_idx = 0;
+	}
 
 	return 0;
 }
