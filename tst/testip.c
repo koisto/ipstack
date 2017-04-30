@@ -142,6 +142,36 @@ void test_parse_invalid_checksum(void)
 														"Parsing did not detect checksum error");
 }
 
+void test_parse_wrong_destination(void)
+{
+	uint8_t ip_header[20] = {
+		0x45,	// version and header length
+		0x00,	// dscp and ecn
+		0x00,	// length	
+		0x14,
+		0x00,	// identification
+		0x00,
+		0x00,	// flags and fragment offset
+		0x00,	// fragment offset
+		0x40,	// time to live
+		0x01,	// protocol
+		0xf8,	// checksum
+		0xd0,
+		0xc0,	// source IP
+		0xa8,
+		0x00,
+		0x01,
+		0xc0,	// destination IP
+		0xa8,
+		0x00,
+		0xc7
+	};
+
+	TEST_ASSERT_NOT_EQUAL_MESSAGE(0, ip_parse_header(ip_header, 20, NULL, NULL, NULL, NULL) , \
+														"Parsing did not detect incorrect destination");	
+}
+
+
 void test_parse_return_protocol(void)
 {
 	uint8_t ip_header[20] = {
@@ -215,6 +245,7 @@ int main (void)
 	RUN_TEST(test_parse_invalid_header_length);
 	RUN_TEST(test_parse_invalid_packet_length);
 	RUN_TEST(test_parse_invalid_checksum);
+	RUN_TEST(test_parse_wrong_destination);
 	RUN_TEST(test_parse_return_protocol);
 	RUN_TEST(test_parse_return_sourceip);
 
