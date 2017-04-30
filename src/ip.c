@@ -48,5 +48,13 @@ uint16_t ip_parse_header(uint8_t * packet, uint16_t len, uint8_t * payload, uint
 	if (proto != NULL)
 		*proto = packet[9];
 
+	// store the source IP address
+	if (src != NULL){
+		src->bytes[0] = packet[12];
+		src->bytes[1] = packet[13];
+		src->bytes[2] = packet[14];
+		src->bytes[3] = packet[15];
+	}	
+
 	return 0;
 }

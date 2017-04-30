@@ -7,7 +7,7 @@
 
 
 typedef struct ip_addr_s {
-
+	uint8_t bytes[4];
 } ip_addr_t;
 
 
