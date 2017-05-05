@@ -1,0 +1,12 @@
+#!/bin/bash
+
+socat -ddd -ddd PTY,link=/home/james/slip,raw,echo=0 "EXEC:/home/james/ipstack/ipstack ,pty,raw,echo=0" &
+SOCAT_PID=${!}
+
+sudo slattach -dv -p slip /home/james/slip &
+SLATTACH_PID=${!}
+
+sudo ifconfig sl0 192.168.0.1 pointopoint 192.168.0.199 up
+sudo route add -host 192.168.0.2 dev sl0
+
+echo "pids: " ${SOCAT_PID} ${SLATTACH_PID}

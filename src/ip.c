@@ -3,8 +3,6 @@
 #include "ipstack_conf.h"
 #include "debug.h"
 
-#include <stddef.h>
-
 uint16_t ip_checksum (uint8_t * header, uint16_t len)
 {
 	uint16_t sum = 0, temp;
