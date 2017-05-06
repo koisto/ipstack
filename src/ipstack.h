@@ -4,4 +4,7 @@
 #include "slip.h"
 #include "ip.h"
 
+
+void ipstack_poll(void);
+
 #endif
