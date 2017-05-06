@@ -6,14 +6,30 @@ A minimal IP stack
 - [Running](#running)
 
 ## Unit Testing
-Unit testing is taken care of courtesy of Unity. 
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis pellentesque lorem. Vestibulum in rutrum quam. Proin quis lobortis ligula, et hendrerit sem. Nunc magna enim, consectetur vel augue at, pretium dignissim lorem. Proin lacinia metus et ligula pharetra ullamcorper. Phasellus congue aliquet ante, eu iaculis sem efficitur in. Etiam consectetur urna justo, non feugiat neque luctus quis. 
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis pellentesque lorem. Vestibulum in rutrum quam. Proin quis lobortis ligula, et hendrerit sem. Nunc magna enim, consectetur vel augue at, pretium dignissim lorem. Proin lacinia metus et ligula pharetra ullamcorper. Phasellus congue aliquet ante, eu iaculis sem efficitur in. Etiam consectetur urna justo, non feugiat neque luctus quis. 
+Unit testing is taken care of courtesy of [Unity](http://www.throwtheswitch.org/unity/). To run the tests you need to download and extract Unity and set the path to Unity's `src` directory in the ipstack's Makefile. 
+```
+UNITYDIR = ../Unity/src
+```
+To run the tests at the command line simply enter:
+```
+$ make test
+```
+The results for individual tests are written to test files in ipstack's root directory.
 
 ## Running
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis pellentesque lorem. Vestibulum in rutrum quam. Proin quis lobortis ligula, et hendrerit sem. Nunc magna enim, consectetur vel augue at, pretium dignissim lorem. Proin lacinia metus et ligula pharetra ullamcorper. Phasellus congue aliquet ante, eu iaculis sem efficitur in. Etiam consectetur urna justo, non feugiat neque luctus quis. 
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis pellentesque lorem. Vestibulum in rutrum quam. Proin quis lobortis ligula, et hendrerit sem. Nunc magna enim, consectetur vel augue at, pretium dignissim lorem. Proin lacinia metus et ligula pharetra ullamcorper. Phasellus congue aliquet ante, eu iaculis sem efficitur in. Etiam consectetur urna justo, non feugiat neque luctus quis. 
+To run the application at the command line:
+```
+$ ./start
+```
+To monitor the application:
+```
+$ tail -f log.txt
+```
+It is then possible to interact with the stack. For example:
+```
+$ ping 192.168.0.199
+```
+To shut the stack down:
+```
+$ ./stop
+```
