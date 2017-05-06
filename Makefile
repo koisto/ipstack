@@ -3,7 +3,7 @@ TARGET   = ipstack
 
 CC       = gcc
 # compiling flags here
-CFLAGS   = -std=c99 -Wall -I. -DDEBUG
+CFLAGS   = -std=c99 -Wall -I. 
 
 LINKER   = gcc
 # linking flags here
@@ -12,7 +12,7 @@ LFLAGS   = -Wall -I. -lm
 # change these to proper directories where each file should be
 SRCDIR   = src
 TSTDIR 	 = tst
-UNITYDIR = Unity/src
+UNITYDIR = ../Unity/src
 
 SOURCES  := $(wildcard $(SRCDIR)/*.c)
 TSTSRC   := $(wildcard $(TSTDIR)/*.c)

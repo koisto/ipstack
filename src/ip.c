@@ -1,7 +1,7 @@
 //
+#include <stddef.h>
 #include "ip.h"
 #include "ipstack_conf.h"
-#include "debug.h"
 
 uint16_t ip_checksum (uint8_t * header, uint16_t len)
 {

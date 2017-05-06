@@ -1,0 +1,7 @@
+#!/bin/bash
+
+sudo ifconfig sl0 down
+sleep 2.0
+sudo kill $(ps aux | grep '[s]lattach' | awk '{print $2}')
+sleep 2.0
+kill $(ps aux | grep '[s]ocat' | awk '{print $2}')
