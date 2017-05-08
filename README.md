@@ -18,7 +18,7 @@ $ make test
 ## Demo Application
 Ipstack comes with a demo application that can be run on the host machine. This is the default target for the makefile. Helper scripts are used to setup the environment so that the IP stack in the demo application can interact with the kernel space IP stack. 
 
-The helper scripts use [socat](https://linux.die.net/man/1/socat) to setup a psuedo terminal (/dev/pty/...) with the demo application attached to one end. Explicit file descriptors are used in the demo application to receive traffic from the pty so that stdout can still be used for monitoring the application. The scripts then configure use [slattach](https://linux.die.net/man/8/slattach) to enable the SLIP driver on the the psuedo terminal. Final ifconfig is used to setup on the interface.  
+The helper scripts use [socat](https://linux.die.net/man/1/socat) to setup a psuedo terminal (/dev/pty/...) with the demo application attached to one end. Explicit file descriptors are used in the demo application to receive traffic from the pty so that stdout can still be used for monitoring the application. The scripts then configure use [slattach](https://linux.die.net/man/8/slattach) to enable the SLIP driver on the the psuedo terminal. Finally ifconfig is used to setup on the interface.  
 
 In order to start the demo:
 ```
@@ -31,4 +31,8 @@ $ ping 192.168.0.199
 To shut down the demo application:
 ```
 $ ./stop-demo
+```
+The script using socat forces data to be sent and received from the demo application using STDIN and STDOUT as such status messages are written to a file, log.txt. This file can be watched whilst the demo is running as follows:
+```
+$ tail -f log.txt
 ```
