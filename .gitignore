@@ -1,6 +1,4 @@
 *.o
-*.out
-ipstack
-*.txt
-src/debug.h
+test*
+demo
 scratch/*
