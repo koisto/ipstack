@@ -1,6 +1,6 @@
 #!/bin/bash
 
-socat -ddd -ddd PTY,link=$HOME/ipstack/slipdev,raw,echo=0 "EXEC:$HOME/ipstack/ipstack ,pty,raw,echo=0" &
+socat -ddd -ddd PTY,link=$HOME/ipstack/slipdev,raw,echo=0 "EXEC:$HOME/ipstack/demo ,pty,raw,echo=0" &
 
 sudo slattach -dv -p slip $HOME/ipstack/slipdev &
 

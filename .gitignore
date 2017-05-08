@@ -1,4 +1,6 @@
 *.o
 test*
 demo
+log.txt
+slipdev
 scratch/*
