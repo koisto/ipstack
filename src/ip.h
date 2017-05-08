@@ -15,4 +15,6 @@ uint16_t ip_checksum (uint8_t * header, uint16_t len);
 
 uint16_t ip_parse_header(uint8_t * packet, uint16_t len, uint16_t * payload_idx, uint8_t * proto, ip_addr_t * src);
 
+void ip_create_header(uint8_t * packet, uint16_t len, uint8_t proto, ip_addr_t * dest);
+
 #endif

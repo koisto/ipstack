@@ -73,3 +73,35 @@ uint16_t ip_parse_header(uint8_t * packet, uint16_t len, uint16_t * payload_idx,
 
 	return 0;
 }
+
+void ip_create_header(uint8_t * packet, uint16_t len, uint8_t proto, ip_addr_t * dest)
+{
+	uint16_t checksum;
+
+	packet[0] 	= 0x45;		// version and header length
+	packet[1] 	= 0x00;		// dscp and ecn
+	packet[2] 	= (uint8_t) (len >> 8);	// length	
+	packet[3] 	= (uint8_t) (len & 0xff);
+	packet[4] 	= 0x00;		// identification
+	packet[5] 	= 0x01;
+	packet[6] 	= 0x00;		// flags and fragment offset
+	packet[7] 	= 0x00;		// fragment offset
+	packet[8] 	= 0x40;		// time to live
+	packet[9] 	= proto;	// protocol
+	packet[10] 	= 0x00;		// checksum
+	packet[11] 	= 0x00;
+	packet[12] 	= g_host_addr.bytes[0];	// source IP
+	packet[13] 	= g_host_addr.bytes[1];
+	packet[14] 	= g_host_addr.bytes[2];
+	packet[15] 	= g_host_addr.bytes[3];
+	packet[16] 	= dest->bytes[0];		// destination IP
+	packet[17] 	= dest->bytes[1];
+	packet[18] 	= dest->bytes[2];
+	packet[19] 	= dest->bytes[3];
+
+	// calculate the header checksum 	
+	checksum = ip_checksum(packet,20);
+	packet[10] 	= (uint8_t) (checksum >> 8);	
+	packet[11] 	= (uint8_t) (checksum & 0xff);
+
+}

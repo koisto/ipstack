@@ -272,6 +272,37 @@ void test_parse_return_upper_packet(void)
 	TEST_ASSERT_EQUAL_UINT16_MESSAGE(20, payload_idx, "Upper packet index not set");
 }
 
+void test_create_header(void)
+{
+	uint8_t expected_ip_header[20] = {
+		0x45,	// version and header length
+		0x00,	// dscp and ecn
+		0x00,	// length	
+		0x1E,
+		0x00,	// identification
+		0x01,
+		0x00,	// flags and fragment offset
+		0x00,	// fragment offset
+		0x40,	// time to live
+		0x01,	// protocol
+		0xf8,	// checksum
+		0xc5,
+		0xc0,	// source IP
+		0xa8,
+		0x00,
+		0xc7,
+		0xc0,	// destination IP
+		0xa8,
+		0x00,
+		0x01
+	};
+
+	uint8_t packet[30];
+	ip_addr_t dest = {{192,168,0,1}};
+
+	ip_create_header(packet, 30, 1, &dest);
+	TEST_ASSERT_EQUAL_UINT8_ARRAY(expected_ip_header, packet, 20);
+}
 
 int main (void)
 {
@@ -288,6 +319,8 @@ int main (void)
 	RUN_TEST(test_parse_return_protocol);
 	RUN_TEST(test_parse_return_sourceip);
 	RUN_TEST(test_parse_return_upper_packet);
+
+	RUN_TEST(test_create_header);
 
 	return UNITY_END();
 }

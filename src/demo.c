@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <stdint.h>
 
+// this function writes to a log file
 void log_write(char *format, ...)
 {
 	FILE * f;
@@ -20,11 +21,17 @@ void log_write(char *format, ...)
 
 }
 
+// send_char function used by slip_send
+// the demo uses a psuedo terminal and as such we write 
+// data to stdout
 void send_char(uint8_t c)
 {
 	fwrite(&c, 1, 1, stdout);
 }
 
+// recv_char function used by slip_recv
+// the demo uses a psuedo terminal and as such we read 
+// data from stdin
 uint8_t recv_char(void)
 {
 	uint8_t c;
@@ -34,6 +41,7 @@ uint8_t recv_char(void)
 
 int main (void)
 {
+	log_write("ipstack demo\n");
 	while (1)
 	{
 		ipstack_poll();
