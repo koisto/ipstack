@@ -1,5 +1,5 @@
 *.o
-test*
+*.out
 demo
 log.txt
 slipdev

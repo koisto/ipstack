@@ -3,6 +3,7 @@
 
 #include "slip.h"
 #include "ip.h"
+#include "icmp.h"
 
 
 void ipstack_poll(void);

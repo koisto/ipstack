@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+#define IP_PROTO_ICMP		1
+#define IP_PROTO_UDP		17
+
 #define IP_HEADER_ERROR		99
 
 typedef struct ip_addr_s {

@@ -13,7 +13,7 @@ SOURCES  := $(wildcard $(SRCDIR)/*.c)
 TSTSRC   := $(wildcard $(TSTDIR)/*.c)
 UNITYSRC := $(wildcard $(UNITYDIR)/*.c)
 
-TSTBIN   := $(patsubst %,%,$(notdir $(basename $(TSTSRC))))
+TSTBIN   := $(patsubst %,%.out,$(notdir $(basename $(TSTSRC))))
 
 OBJECTS  := $(SOURCES:$(SRCDIR)/%.c=%.o)
 
@@ -25,7 +25,7 @@ demo : $(OBJECTS)
 test : $(TSTBIN)
 	@$(foreach tst,$(TSTBIN),./$(tst);)   
 
-test% : test%.o %.o unity.o
+test%.out : test%.o %.o unity.o
 	@echo "Linking $@"
 	@$(LINKER) -o $@ $^
 
@@ -45,5 +45,5 @@ test% : test%.o %.o unity.o
 
 .PHONY: clean
 clean:
-	@rm -f *.o test* demo
+	@rm -f *.o *.out demo
 

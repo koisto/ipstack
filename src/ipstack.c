@@ -21,6 +21,8 @@ void ipstack_poll(void)
 		++g_rx_packets; 
 		log_write("%4d - Packet received: length = %3d, protocol = %2d, source = %u,%u,%u,%u\n", g_rx_packets, length, proto, \
 																				src.bytes[0], src.bytes[1], src.bytes[2], src.bytes[3]);
+
+		
 	}
 	else
 	{
