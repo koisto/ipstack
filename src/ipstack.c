@@ -4,6 +4,8 @@
 
 #include <stdint.h>
 
+ip_addr_t g_host_addr = {HOST_ADDR};
+
 uint8_t g_buffer[500];
 uint16_t g_packet_len;
 
@@ -30,7 +32,7 @@ void ipstack_poll(void)
 	}
 	else
 	{
-		log_write("Error! %d %d\n", length, rc);
+		log_write("Error! %d %d\n", g_packet_len, rc);
 	}
 
 }

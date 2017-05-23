@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#include "ipstack_conf.h"
+
 // types
 typedef struct ip_addr_s {
 	uint8_t bytes[4];

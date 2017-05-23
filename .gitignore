@@ -2,5 +2,5 @@
 *.out
 demo
 log.txt
-slipdev
 scratch/*
+slipdev
