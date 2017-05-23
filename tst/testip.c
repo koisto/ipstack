@@ -1,6 +1,13 @@
 #include "unity.h"
 #include "ip.h"
 
+#include <string.h>
+
+ip_addr_t g_host_addr = {{192,168,0,199}};
+
+uint8_t g_buffer[500];
+uint16_t g_packet_len;
+
 
 void test_checksum_calc(void)
 {
@@ -49,8 +56,10 @@ void test_parse_invalid_version(void)
 		0xc7
 	};
 
+	memcpy(g_buffer, ip_header, 20);
+	g_packet_len = 20;
 
-	TEST_ASSERT_EQUAL_UINT16_MESSAGE(IP_HEADER_ERROR, ip_parse_header(ip_header, 20, NULL, NULL, NULL), \
+	TEST_ASSERT_EQUAL_UINT16_MESSAGE(IP_HEADER_ERROR, ip_parse_header(NULL, NULL, NULL), \
 														"Parsing did not detect error in header version");
 }
 
@@ -79,9 +88,11 @@ void test_parse_invalid_header_length(void)
 		0xc7
 	};
 
-	TEST_ASSERT_EQUAL_UINT16_MESSAGE(IP_HEADER_ERROR, ip_parse_header(ip_header, 20, NULL, NULL, NULL), \
-														"Parsing did not detect error in header length field");
+	memcpy(g_buffer, ip_header, 20);
+	g_packet_len = 20;
 
+	TEST_ASSERT_EQUAL_UINT16_MESSAGE(IP_HEADER_ERROR, ip_parse_header(NULL, NULL, NULL), \
+														"Parsing did not detect error in header length field");
 }
 
 void test_parse_invalid_packet_length(void)
@@ -109,7 +120,12 @@ void test_parse_invalid_packet_length(void)
 		0xc7
 	};
 
-	TEST_ASSERT_EQUAL_UINT16_MESSAGE(IP_HEADER_ERROR, ip_parse_header(ip_header, 10, NULL, NULL, NULL), \
+
+	memcpy(g_buffer, ip_header, 20);
+	g_packet_len = 10;
+
+
+	TEST_ASSERT_EQUAL_UINT16_MESSAGE(IP_HEADER_ERROR, ip_parse_header(NULL, NULL, NULL), \
 														"Parsing did not detect error in packet length - too short");
 }
 
@@ -138,7 +154,10 @@ void test_parse_invalid_checksum(void)
 		0xc7
 	};
 
-	TEST_ASSERT_EQUAL_UINT16_MESSAGE(IP_HEADER_ERROR, ip_parse_header(ip_header, 20, NULL, NULL, NULL), \
+	memcpy(g_buffer, ip_header, 20);
+	g_packet_len = 20;
+
+	TEST_ASSERT_EQUAL_UINT16_MESSAGE(IP_HEADER_ERROR, ip_parse_header(NULL, NULL, NULL), \
 														"Parsing did not detect checksum error");
 }
 
@@ -167,10 +186,12 @@ void test_parse_wrong_destination(void)
 		0xc8
 	};
 
-	TEST_ASSERT_EQUAL_UINT16_MESSAGE(IP_HEADER_ERROR, ip_parse_header(ip_header, 20, NULL, NULL, NULL) , \
+	memcpy(g_buffer, ip_header, 20);
+	g_packet_len = 20;
+
+	TEST_ASSERT_EQUAL_UINT16_MESSAGE(IP_HEADER_ERROR, ip_parse_header(NULL, NULL, NULL) , \
 														"Parsing did not detect incorrect destination");	
 }
-
 
 void test_parse_return_protocol(void)
 {
@@ -199,7 +220,10 @@ void test_parse_return_protocol(void)
 
 	uint8_t proto = 111;
 
-	ip_parse_header(ip_header, 20, NULL, &proto, NULL);
+	memcpy(g_buffer, ip_header, 20);
+	g_packet_len = 20;
+
+	ip_parse_header(NULL, &proto, NULL);
 	TEST_ASSERT_EQUAL_MESSAGE(1, proto, "Parsing did not return protocol value");
 }
 
@@ -230,7 +254,10 @@ void test_parse_return_sourceip(void)
 
 	ip_addr_t source;
 
-	ip_parse_header(ip_header, 20, NULL, NULL, &source);
+	memcpy(g_buffer, ip_header, 20);
+	g_packet_len = 20;
+
+	ip_parse_header(NULL, NULL, &source);
 	TEST_ASSERT_EQUAL_UINT8_ARRAY(&ip_header[12], source.bytes, sizeof(ip_addr_t));
 }
 
@@ -268,7 +295,10 @@ void test_parse_return_upper_packet(void)
 	ip_addr_t source;
 	uint16_t payload_idx;
 
-	ip_parse_header(ip_header, 25, &payload_idx, &proto, &source);
+	memcpy(g_buffer, ip_header, 25);
+	g_packet_len = 25;
+
+	ip_parse_header(&payload_idx, &proto, &source);
 	TEST_ASSERT_EQUAL_UINT16_MESSAGE(20, payload_idx, "Upper packet index not set");
 }
 
