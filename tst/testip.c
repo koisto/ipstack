@@ -327,11 +327,11 @@ void test_create_header(void)
 		0x01
 	};
 
-	uint8_t packet[30];
+
 	ip_addr_t dest = {{192,168,0,1}};
 
-	ip_create_header(packet, 30, 1, &dest);
-	TEST_ASSERT_EQUAL_UINT8_ARRAY(expected_ip_header, packet, 20);
+	ip_create_header(10, 1, &dest);
+	TEST_ASSERT_EQUAL_UINT8_ARRAY(expected_ip_header, g_buffer, 20);
 }
 
 int main (void)

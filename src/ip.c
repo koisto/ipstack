@@ -72,34 +72,37 @@ uint16_t ip_parse_header(uint16_t * payload_idx, uint8_t * proto, ip_addr_t * sr
 	return 0;
 }
 
-void ip_create_header(uint8_t * packet, uint16_t len, uint8_t proto, ip_addr_t * dest)
+void ip_create_header(uint16_t len, uint8_t proto, ip_addr_t * dest)
 {
 	uint16_t checksum;
 
-	packet[0] 	= 0x45;		// version and header length
-	packet[1] 	= 0x00;		// dscp and ecn
-	packet[2] 	= (uint8_t) (len >> 8);	// length	
-	packet[3] 	= (uint8_t) (len & 0xff);
-	packet[4] 	= 0x00;		// identification
-	packet[5] 	= 0x01;
-	packet[6] 	= 0x00;		// flags and fragment offset
-	packet[7] 	= 0x00;		// fragment offset
-	packet[8] 	= 0x40;		// time to live
-	packet[9] 	= proto;	// protocol
-	packet[10] 	= 0x00;		// checksum
-	packet[11] 	= 0x00;
-	packet[12] 	= g_host_addr.bytes[0];	// source IP
-	packet[13] 	= g_host_addr.bytes[1];
-	packet[14] 	= g_host_addr.bytes[2];
-	packet[15] 	= g_host_addr.bytes[3];
-	packet[16] 	= dest->bytes[0];		// destination IP
-	packet[17] 	= dest->bytes[1];
-	packet[18] 	= dest->bytes[2];
-	packet[19] 	= dest->bytes[3];
+	// add header size to len
+	len += 20;
+
+	g_buffer[0] 	= 0x45;		// version and header length
+	g_buffer[1] 	= 0x00;		// dscp and ecn
+	g_buffer[2] 	= (uint8_t) (len >> 8);	// length	
+	g_buffer[3] 	= (uint8_t) (len & 0xff);
+	g_buffer[4] 	= 0x00;		// identification
+	g_buffer[5] 	= 0x01;
+	g_buffer[6] 	= 0x00;		// flags and fragment offset
+	g_buffer[7] 	= 0x00;		// fragment offset
+	g_buffer[8] 	= 0x40;		// time to live
+	g_buffer[9] 	= proto;	// protocol
+	g_buffer[10] 	= 0x00;		// checksum
+	g_buffer[11] 	= 0x00;
+	g_buffer[12] 	= g_host_addr.bytes[0];	// source IP
+	g_buffer[13] 	= g_host_addr.bytes[1];
+	g_buffer[14] 	= g_host_addr.bytes[2];
+	g_buffer[15] 	= g_host_addr.bytes[3];
+	g_buffer[16] 	= dest->bytes[0];		// destination IP
+	g_buffer[17] 	= dest->bytes[1];
+	g_buffer[18] 	= dest->bytes[2];
+	g_buffer[19] 	= dest->bytes[3];
 
 	// calculate the header checksum 	
-	checksum = ip_checksum(packet,20);
-	packet[10] 	= (uint8_t) (checksum >> 8);	
-	packet[11] 	= (uint8_t) (checksum & 0xff);
+	checksum = ip_checksum(g_buffer,20);
+	g_buffer[10] 	= (uint8_t) (checksum >> 8);	
+	g_buffer[11] 	= (uint8_t) (checksum & 0xff);
 
 }
