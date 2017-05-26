@@ -3,7 +3,7 @@
 #include "ip.h"
 #include "icmp.h"
 
-#include <stdint.h>
+
 
 ip_addr_t g_host_addr = {HOST_ADDR};
 
@@ -40,7 +40,8 @@ void ipstack_poll(void)
 			
 
 			default: 
-				
+				// protocol not supported
+				icmp_send(&src, ICMP_DEST_UNREACHABLE, ICMP_PROTOCOL_UNREACHABLE, NULL, g_buffer, payload_idx + 8);
 				break;	
 		}	
 

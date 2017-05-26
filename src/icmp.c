@@ -49,11 +49,17 @@ uint16_t icmp_send(ip_addr_t * dest, uint8_t type, uint8_t code, uint8_t * rest_
 
 	// copy rest of header into buffer
 	for (i = 0; i < 4; i++)
-		g_buffer[24+i] = rest_of_header[i];
+		if (rest_of_header != NULL)
+			g_buffer[24+i] = rest_of_header[i];
+		else
+			g_buffer[24+i] = 0;
 
 	// copy data into buffer
-	for (i = 0; i < data_len; i++)	
-		g_buffer[28+i] = data[i];
+	for (i = 0; i < data_len; i++)
+		if (data != NULL)	
+			g_buffer[28+i] = data[i];
+		else
+			g_buffer[28+i] = 0;	
 
 	// caluculate the checksum
 	checksum = ip_checksum(&g_buffer[20],data_len + 8);
