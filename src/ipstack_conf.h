@@ -7,7 +7,7 @@
 
 
 
-#define HOST_ADDR  {192,168,0,199}
+#define HOST_ADDR  {10,0,0,2}
 
 
 

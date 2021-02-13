@@ -1,8 +1,11 @@
 #!/bin/bash
 
-socat -ddd -ddd PTY,link=$HOME/ipstack/slipdev,raw,echo=0 "EXEC:$HOME/ipstack/demo ,pty,raw,echo=0" &
+socat PTY,link=./slipdev,raw,echo=0 "EXEC:./demo ,pty,raw,echo=0" &
 
-sudo slattach -dv -p slip $HOME/ipstack/slipdev &
+PTY=$(readlink ./slipdev)
+#echo $PTY
 
-sudo ifconfig sl0 192.168.0.1 pointopoint 192.168.0.199 up
+slattach -p slip $PTY &
+
+ifconfig sl0 10.0.0.1 pointopoint 10.0.0.2 up
 
