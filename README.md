@@ -20,7 +20,7 @@ Ipstack comes with a demo application that can be run on the host machine. This 
 
 The helper scripts use [socat](https://linux.die.net/man/1/socat) to setup a psuedo terminal (/dev/pty/...) with the demo application attached to one end. Explicit file descriptors are used in the demo application to receive traffic from the pty so that stdout can still be used for monitoring the application. The scripts then configure use [slattach](https://linux.die.net/man/8/slattach) to enable the SLIP driver on the the psuedo terminal. Finally ifconfig is used to setup on the interface. 
 
-On a debian based system slattch and ifconfig can be installed from the net-tools package.
+On a debian based system slattach and ifconfig can be installed from the net-tools package.
 ```
 $ sudo apt install net-tools
 ```

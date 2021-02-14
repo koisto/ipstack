@@ -3,16 +3,21 @@
 // from https://tools.ietf.org/html/rfc1055
 #include "slip.h"
 
-// externally defined function to send and receive chars
+/* externally defined functions to send and receive data */
 extern void send_char(uint8_t c);
 extern uint8_t recv_char(void);
 
-// SLIP special character codes 
+/* SLIP special character codes */ 
 #define END             0300    /* indicates end of packet */
 #define ESC             0333    /* indicates byte stuffing */
 #define ESC_END         0334    /* ESC ESC_END means END data byte */
 #define ESC_ESC         0335    /* ESC ESC_ESC means ESC data byte */
 
+/* @brief Function to send a packet using SLIP encoding
+ * @param p Pointer to location of packet to send
+ * @param len Size of the packet
+ * @return None
+ */
 void slip_send_packet(uint8_t * p, uint16_t len) 
 {
 	// send an initial END character to flush out any data that may
@@ -51,6 +56,11 @@ void slip_send_packet(uint8_t * p, uint16_t len)
 	send_char(END);
 }
 
+/* @brief Function to receive SLIP formatted data
+ * @param p Pointer to the buffer to store decoded data
+ * @param len Size of the buffer
+ * @return Amount of data received
+ */
 uint16_t slip_recv_packet(uint8_t * p, uint16_t len)
 {
 	uint8_t c;
