@@ -1,11 +1,42 @@
 #!/bin/bash
 
-socat PTY,link=./slipdev,raw,echo=0 "EXEC:./demo ,pty,raw,echo=0" &
+DEVSYMLINK=/tmp/slipdev
 
-PTY=$(readlink ./slipdev)
-#echo $PTY
+check_running_pid () {
+    if [ $# -ne 1 ]; then 
+        return -1
+    else
+        kill -0 $1
+        return $?
+    fi
+}
 
-slattach -p slip $PTY &
+# check to see if symlink exists. If it does then already running
+if [ ! -h $DEVSYMLINK ]; then
+    # use socat to link application to pseudo terminal
+    socat PTY,link=$DEVSYMLINK,raw,echo=0 "EXEC:./demo ,pty,raw,echo=0" &
+    PIDSOCAT=$!
 
+    sleep 2
+    check_running_pid $PIDSOCAT
+    if [ $? -ne 0 ]; then
+        exit 1
+    fi
+else
+    echo "Link is currently up."
+    echo "Run sudo ./demo-stop to quit then retry."
+    exit 1
+fi
+
+# attach network interface to the pseudo terminal
+slattach -p slip $DEVSYMLINK &
+PIDSLATTACH=$!
+
+sleep 2
+check_running_pid $PIDSLATTACH 
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+
+# bring the network interface up
 ifconfig sl0 10.0.0.1 pointopoint 10.0.0.2 up
-
